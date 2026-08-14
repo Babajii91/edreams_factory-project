@@ -6,10 +6,7 @@ const PORT = 3000;
 function getChatReply(message) {
     const text = message.toLowerCase();
 
-    // ========== QUESTIONS QUI NÉCESSITENT L'ÉQUIPE - VÉRIFIÉES EN PREMIER ==========
-
     // Question Budget
-    // Car ce sont des questions qui demandent une réponse personnalisée
     if (text.includes("budget") || text.includes("prix") || text.includes("tarif") || text.includes("coût") || text.includes("devis") || text.includes("coûts") || text.includes("facturation")) {
         return "Excellente question ! Pour vous proposer un devis ou discuter de nos tarifs et options de facturation adaptés à votre projet, notre équipe vous contactera rapidement pour étudier votre demande.";
     }
