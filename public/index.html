@@ -1,16 +1,176 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edreams Factory</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edreams Factory</title>
+<link rel="stylesheet" href="css/style.css">
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.16.1/dist/cdn.min.js"></script>
 </head>
 
 <body>
+    <header>
+        <div class="navigation">
+            <a href="/" class="logo">
+                Edreams<span>Factory</span>
+            </a>
+            <nav>
+                <a href="#projet">Votre projet</a>
+                <a href="#expertise">Notre expertise</a>
+            </nav>
+            <a href="#projet" class="bouton-contact">
+                Parlons de votre projet
+            </a>
+        </div>
+    </header>
 
-    <h1>Votre projet digital</h1>
+    <main>
+        <section class="presentation">
 
-    <p>Bienvenue sur notre formulaire.</p>
+            <p class="petit-titre">
+                VOTRE PROJET DIGITAL
+            </p>
+
+            <h1>
+                Parlons de votre
+                <span>projet.</span>
+            </h1>
+
+            <p class="description">
+                Quelques questions pour nous permettre de mieux
+                comprendre votre besoin et vous proposer une
+                solution adaptée.
+            </p>
+
+            <a href="#projet" class="bouton-principal">
+                Commencer
+            </a>
+        </section>
+
+        <section id="projet" class="formulaire-section">
+            <div class="titre-section">
+
+                <p class="petit-titre">
+                    VOTRE BESOIN
+                </p>
+
+                <h2>
+                    Qualifions votre projet
+                </h2>
+
+                <p>
+                    Cela ne prendra que quelques minutes.
+                </p>
+            </div>
+
+            <div class="formulaire" x-data="projectForm()">
+
+                <h3>
+                    Quelques informations sur votre projet
+                </h3>
+
+                <p>
+                    Ces informations vont nous permettre
+                    de mieux comprendre votre besoin.
+                </p>
+
+                <form class="form-grid" @submit.prevent="submitForm">
+
+                    <div class="champ">
+                        <label for="users">Nombre d’utilisateurs attendus</label>
+                        <input id="users" type="number" min="1" x-model.number="form.utilisateurs" placeholder="Ex. 500" :disabled="isSubmitted">
+                    </div>
+
+                    <div class="champ">
+                        <label for="budget">Budget envisagé</label>
+                        <select id="budget" x-model="form.budget" :disabled="isSubmitted">
+                            <option value="">Sélectionnez</option>
+                            <option value="Moins de 5 000 €">Moins de 5 000 €</option>
+                            <option value="Entre 5 000 € et 15 000 €">Entre 5 000 € et 15 000 €</option>
+                            <option value="Entre 15 000 € et 30 000 €">Entre 15 000 € et 30 000 €</option>
+                            <option value="Plus de 30 000 €">Plus de 30 000 €</option>
+                        </select>
+                    </div>
+
+                    <div class="champ">
+                        <label>Disponibilité des maquettes</label>
+                        <div class="choix">
+                            <label><input type="radio" name="maquettes" value="Oui" x-model="form.maquettes" :disabled="isSubmitted"> Oui</label>
+                            <label><input type="radio" name="maquettes" value="Non" x-model="form.maquettes" :disabled="isSubmitted"> Non</label>
+                        </div>
+                    </div>
+
+                    <div class="champ">
+                        <label>Souhaitez-vous une application mobile ?</label>
+                        <div class="choix">
+                            <label><input type="radio" name="mobile" value="Oui" x-model="form.mobile" :disabled="isSubmitted"> Oui</label>
+                            <label><input type="radio" name="mobile" value="Non" x-model="form.mobile" :disabled="isSubmitted"> Non</label>
+                        </div>
+                    </div>
+
+                    <div class="champ full">
+                        <label for="description">Décrivez votre projet</label>
+                        <textarea id="description" rows="6" x-model="form.description" placeholder="Décrivez votre projet, vos objectifs, vos besoins et le type de solution recherchée..." :disabled="isSubmitted"></textarea>
+                    </div>
+
+                    <div class="resume full" x-show="form.utilisateurs || form.budget || form.maquettes || form.mobile || form.description">
+                        <h4>Résumé du projet</h4>
+                        <ul>
+                            <li><strong>Nombre d'utilisateurs :</strong> <span x-text="form.utilisateurs ? form.utilisateurs : 'Non renseigné'"></span></li>
+                            <li><strong>Budget :</strong> <span x-text="form.budget || 'Non renseigné'"></span></li>
+                            <li><strong>Maquettes disponibles :</strong> <span x-text="form.maquettes || 'Non renseigné'"></span></li>
+                            <li><strong>Application mobile :</strong> <span x-text="form.mobile || 'Non renseigné'"></span></li>
+                            <li><strong>Description :</strong> <span x-text="form.description || 'Non renseignée'"></span></li>
+                        </ul>
+                    </div>
+
+                    <div class="actions full" x-show="!isSubmitted">
+                        <button type="submit" class="bouton-principal">Envoyer ma demande</button>
+                    </div>
+
+                    <div class="error-message full" x-show="errorMessage" x-text="errorMessage"></div>
+                    <div class="success-message full" x-show="successMessage" x-text="successMessage"></div>
+
+                    <div class="actions full" x-show="isSubmitted">
+                        <button type="button" class="bouton-principal" @click="goBack()">Retour</button>
+                    </div>
+
+                </form>
+
+                <div class="chatbot" x-data="chatbot()">
+                    <button class="chatbot-toggle" @click="open = !open">
+                        Assistant
+                    </button>
+
+                    <div class="chatbot-box" x-show="open" x-transition>
+                        <div class="chatbot-header">
+                            <strong>Assistant Edreams</strong>
+                        </div>
+
+                        <div class="chatbot-messages">
+                            <template x-for="(message, index) in messages" :key="index">
+                                <div :class="'message ' + message.side">
+                                    <span x-text="message.text"></span>
+                                </div>
+                            </template>
+                        </div>
+
+                        <div class="chatbot-input">
+                            <input type="text" x-model="input" @keyup.enter="sendMessage()" placeholder="Posez votre question...">
+                            <button @click="sendMessage()">Envoyer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+<footer>
+        <p>
+            2026 Edreams Factory - Tous droits réservés.
+        </p>
+</footer>
+
+<script src="js/app.js"></script>
 
 </body>
 </html>
