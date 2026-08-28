@@ -59,6 +59,7 @@ document.addEventListener('alpine:init', () => {
         chatbot() {
             return {
                 open: false,
+                expanded: false,
                 input: '',
                 messages: [
                     { side: 'bot', text: 'Bonjour ! Je peux vous aider à qualifier votre projet.' },
@@ -127,6 +128,7 @@ const closeChatbot = () => {
         const chatData = Alpine.$data(chatEl);
         if (chatData && typeof chatData.open !== 'undefined') {
             chatData.open = false;
+            chatData.expanded = false;
         }
     });
 };

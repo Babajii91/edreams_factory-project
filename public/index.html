@@ -57,7 +57,19 @@
                 </p>
             </div>
 
-            <div class="formulaire" x-data="projectForm()">
+            <div class="formulaire-layout" x-data="projectForm()" :class="{ 'sans-resume': !(form.utilisateurs || form.budget || form.maquettes || form.mobile || form.description) }">
+                <aside class="resume" x-show="form.utilisateurs || form.budget || form.maquettes || form.mobile || form.description">
+                    <h4>Résumé du projet</h4>
+                    <ul>
+                        <li><strong>Nombre d'utilisateurs :</strong> <span x-text="form.utilisateurs ? form.utilisateurs : 'Non renseigné'"></span></li>
+                        <li><strong>Budget :</strong> <span x-text="form.budget || 'Non renseigné'"></span></li>
+                        <li><strong>Maquettes disponibles :</strong> <span x-text="form.maquettes || 'Non renseigné'"></span></li>
+                        <li><strong>Application mobile :</strong> <span x-text="form.mobile || 'Non renseigné'"></span></li>
+                        <li><strong>Description :</strong> <span x-text="form.description || 'Non renseignée'"></span></li>
+                    </ul>
+                </aside>
+
+                <div class="formulaire">
 
                 <h3>
                     Quelques informations sur votre projet
@@ -107,17 +119,6 @@
                         <textarea id="description" rows="6" x-model="form.description" placeholder="Décrivez votre projet, vos objectifs, vos besoins et le type de solution recherchée..." :disabled="isSubmitted"></textarea>
                     </div>
 
-                    <div class="resume full" x-show="form.utilisateurs || form.budget || form.maquettes || form.mobile || form.description">
-                        <h4>Résumé du projet</h4>
-                        <ul>
-                            <li><strong>Nombre d'utilisateurs :</strong> <span x-text="form.utilisateurs ? form.utilisateurs : 'Non renseigné'"></span></li>
-                            <li><strong>Budget :</strong> <span x-text="form.budget || 'Non renseigné'"></span></li>
-                            <li><strong>Maquettes disponibles :</strong> <span x-text="form.maquettes || 'Non renseigné'"></span></li>
-                            <li><strong>Application mobile :</strong> <span x-text="form.mobile || 'Non renseigné'"></span></li>
-                            <li><strong>Description :</strong> <span x-text="form.description || 'Non renseignée'"></span></li>
-                        </ul>
-                    </div>
-
                     <div class="actions full" x-show="!isSubmitted">
                         <button type="submit" class="bouton-principal">Envoyer ma demande</button>
                     </div>
@@ -132,13 +133,19 @@
                 </form>
 
                 <div class="chatbot" x-data="chatbot()">
-                    <button class="chatbot-toggle" @click="open = !open">
-                        Assistant
-                    </button>
+                    <div class="chatbot-actions">
+                        <button class="chatbot-toggle" @click="open = !open">
+                            Assistant
+                        </button>
+                        <button class="chatbot-expand" @click="open = true; expanded = true" aria-label="Ouvrir le chatbot au centre">
+                            Agrandir
+                        </button>
+                    </div>
 
-                    <div class="chatbot-box" x-show="open" x-transition>
+                    <div class="chatbot-box" :class="{ 'chatbot-box-expanded': expanded }" x-show="open" x-transition>
                         <div class="chatbot-header">
                             <strong>Assistant Edreams</strong>
+                            <button class="chatbot-close" @click="open = false; expanded = false" aria-label="Fermer le chatbot">×</button>
                         </div>
 
                         <div class="chatbot-messages">
@@ -150,10 +157,11 @@
                         </div>
 
                         <div class="chatbot-input">
-                            <input type="text" x-model="input" @keyup.enter="sendMessage()" placeholder="Posez votre question...">
+                            <textarea x-model="input" @keydown.ctrl.enter.prevent="sendMessage()" placeholder="Posez votre question..."></textarea>
                             <button @click="sendMessage()">Envoyer</button>
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
         </section>
