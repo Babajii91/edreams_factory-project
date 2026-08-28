@@ -5,7 +5,6 @@ Application web de qualification de projet avec un formulaire client et un chatb
 ## Prerequis
 
 - Node.js installe
-- npm disponible dans le terminal
 
 ## Installation
 
